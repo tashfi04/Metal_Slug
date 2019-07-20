@@ -177,8 +177,15 @@ public class Player extends Sprite {
 
                 if (count == 2){
 
-                    float bulletx = b2body.getPosition().x + 5;
-                    float bulletY = b2body.getPosition().y;
+                    float bulletx;
+                    float bulletY;
+                    if(Right)
+                        bulletx = b2body.getPosition().x + 10;
+
+                    else
+                        bulletx = b2body.getPosition().x - 10;
+
+                    bulletY = b2body.getPosition().y + 5;
 
                     if(Right)
                         bullets.add(new Bullet(world, screen, bulletx, bulletY, 250f));
@@ -226,7 +233,7 @@ public class Player extends Sprite {
 
         if(b2body.getLinearVelocity().y > 0 && spacePressed)
             return  State.Jump;
-        else if(b2body.getLinearVelocity().y < 0)
+        else if(b2body.getLinearVelocity().y < 0 && spacePressed)
             return State.Fall;
         else if(b2body.getLinearVelocity().x != 0)
             return State.Walk;
@@ -244,7 +251,7 @@ public class Player extends Sprite {
 
     public void definePlayer() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(3750f + 52/2, 300f + 78/2);
+        bdef.position.set(200f + 52/2, 300f + 78/2);
 
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);

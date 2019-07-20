@@ -35,9 +35,6 @@ public class PlayScreen implements Screen, InputProcessor {
     public FirstBoss boss1;
 
     public boolean bool;
-    public boolean isHurt=false;
-    public boolean enemyisHurt=false;
-    public boolean cam = false;
     public boolean spacePressed = false;
 
     public Sniper sniper;
@@ -134,8 +131,8 @@ public class PlayScreen implements Screen, InputProcessor {
         countDt=countDt%500;
 
 
-        if(right && player.b2body.getLinearVelocity().x<=1000000)
-            player.b2body.applyLinearImpulse(new Vector2(1000000f,0),player.b2body.getWorldCenter(),true);
+        if(right && player.b2body.getLinearVelocity().x<=50)
+            player.b2body.applyLinearImpulse(new Vector2(50f,0),player.b2body.getWorldCenter(),true);
 
         else if(left && player.b2body.getLinearVelocity().x>=-50)
             player.b2body.applyLinearImpulse(new Vector2(-50f,0),player.b2body.getWorldCenter(),true);
@@ -150,6 +147,10 @@ public class PlayScreen implements Screen, InputProcessor {
         //System.out.println(right + "ssds" + left);
     }
     public void update(float dt){
+
+        if(player.b2body.getLinearVelocity().y == 0)
+            jump = false;
+
         handleInput(dt);
         world.step(1/60f,6,2);
 
@@ -186,6 +187,9 @@ public class PlayScreen implements Screen, InputProcessor {
         gamecam.position.x= player.b2body.getPosition().x+80;
         if(player.b2body.getPosition().x > 3306 && player.b2body.getPosition().x < 3542) // 3306 3542)
             gamecam.position.y = player.b2body.getPosition().y+40;
+        if(player.b2body.getPosition().x > 3542) {
+            gamecam.position.y = 180;
+        }
 
         gamecam.update();
         renderer.setView(gamecam);
@@ -279,9 +283,10 @@ public class PlayScreen implements Screen, InputProcessor {
             MenuScreen.menu.play();
             game.setScreen(game.menuScreen);
         }
-        else if(keycode == Input.Keys.SPACE) {
+        else if(keycode == Input.Keys.SPACE && !jump) {
             player.b2body.applyLinearImpulse(new Vector2(0, 153f), player.b2body.getWorldCenter(), true);
             spacePressed = true;
+            jump = true;
         }
         else if(keycode == Input.Keys.RIGHT)
             right = true;

@@ -98,6 +98,12 @@ public class FirstBoss extends Sprite {  //Each frame size 99 x 61
                 animationChangeTime += dt;
             } else if (currentState == State.charge) {
                 //System.out.println((charging.getKeyFrameIndex(elapsedTime)));
+
+                if (getY() < 90) {
+                    setPosition(getX(), getY() + 10f);
+                } else if (getY() > 200)
+                    setPosition(getX(), getY() - 10f);
+
                 if (charging.getKeyFrameIndex(elapsedTime) == 18) {
                     currentState = State.shoot;
                     elapsedTime = 0f;
